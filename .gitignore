@@ -2,3 +2,5 @@
 *~
 *.pyc
 core
+mavros/CMakeLists.txt.user
+build-mavros-*
