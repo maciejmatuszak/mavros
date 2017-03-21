@@ -268,7 +268,7 @@ private:
 			else {
 				average_offset(offset_ns);
 				dt_diag.tick(dt, tsync.tc1, time_offset_ns);
-                //ROS_INFO_STREAM("TM: Clock normal delta: " << (dt/1000.0) << " [us];");
+                                ROS_INFO_STREAM("TM: Clock normal delta: " << (dt/1000.0) << " [us];");
 				uas->set_time_offset(time_offset_ns);
 			}
 		}
