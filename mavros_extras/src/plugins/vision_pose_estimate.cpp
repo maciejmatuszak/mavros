@@ -115,7 +115,8 @@ private:
 
 		auto position = UAS::transform_frame_enu_ned(Eigen::Vector3d(tr.translation()));
 		auto rpy = UAS::quaternion_to_rpy(
-				UAS::transform_orientation_enu_ned(Eigen::Quaterniond(tr.rotation())));
+				UAS::transform_orientation_enu_ned(
+				UAS::transform_orientation_baselink_aircraft(Eigen::Quaterniond(tr.rotation()))));
 
 		vision_position_estimate(stamp.toNSec() / 1000,
 				position.x(), position.y(), position.z(),
