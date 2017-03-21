@@ -103,23 +103,23 @@ private:
 	 * @brief Send vision estimate transform to FCU position controller
 	 */
 	void send_vision_estimate(const ros::Time &stamp, const Eigen::Affine3d &tr) {
-        /**
-         * @warning Issue #60.
-         * This now affects pose callbacks too.
-         */
-        if (last_transform_stamp == stamp) {
-            ROS_DEBUG_THROTTLE_NAMED(10, "vision_pose", "Vision: Same transform as last one, dropped.");
-            return;
-        }
-        last_transform_stamp = stamp;
+		/**
+		 * @warning Issue #60.
+		 * This now affects pose callbacks too.
+		 */
+		if (last_transform_stamp == stamp) {
+			ROS_DEBUG_THROTTLE_NAMED(10, "vision_pose", "Vision: Same transform as last one, dropped.");
+			return;
+		}
+		last_transform_stamp = stamp;
 
-        auto position = Eigen::Vector3d(tr.translation());
+		auto position = UAS::transform_frame_enu_ned(Eigen::Vector3d(tr.translation()));
+		auto rpy = UAS::quaternion_to_rpy(
+				UAS::transform_orientation_enu_ned(Eigen::Quaterniond(tr.rotation())));
 
-        auto rpy = UAS::quaternion_to_rpy((Eigen::Quaterniond(tr.rotation())));
-
-        vision_position_estimate(stamp.toNSec() / 1000,
-                position.x(), -position.y(), -position.z(),
-                rpy.x(), rpy.y(), rpy.z());
+		vision_position_estimate(stamp.toNSec() / 1000,
+				position.x(), position.y(), position.z(),
+				rpy.x(), rpy.y(), rpy.z());
 	}
 
 	/* -*- callbacks -*- */
