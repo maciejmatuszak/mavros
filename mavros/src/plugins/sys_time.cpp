@@ -241,11 +241,10 @@ private:
 	}
 
 	void handle_timesync(const mavlink_message_t *msg, uint8_t sysid, uint8_t compid) {
-
-                uint64_t now_ns = ros::Time::now().toNSec();
 		mavlink_timesync_t tsync;
 		mavlink_msg_timesync_decode(msg, &tsync);
 
+		uint64_t now_ns = ros::Time::now().toNSec();
 
 		if (tsync.tc1 == 0) {
 			send_timesync_msg(now_ns, tsync.ts1);
@@ -268,7 +267,7 @@ private:
 			else {
 				average_offset(offset_ns);
 				dt_diag.tick(dt, tsync.tc1, time_offset_ns);
-                                ROS_INFO_STREAM("TM: Clock normal delta: " << (dt/1000.0) << " [us];");
+
 				uas->set_time_offset(time_offset_ns);
 			}
 		}
